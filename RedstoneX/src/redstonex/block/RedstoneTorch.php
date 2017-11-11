@@ -40,16 +40,19 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
         for($x = $this->getX()-1; $x <= $this->getX()+1; $x++) {
             if(RedstoneX::isRedstone($block = $this->asPosition()->getLevel()->getBlock(Position::fromObject($this->asPosition()->add($x, 0, 0), $this->asPosition()->getLevel())))) {
                 RedstoneX::setActive($block, 15);
+                RedstoneX::getInstance()->getLogger()->info("§aACTIVATING found");
             }
         }
         for($y = $this->getY(); $y <= $this->getY()+1; $y++) {
             if(RedstoneX::isRedstone($block = $this->asPosition()->getLevel()->getBlock(Position::fromObject($this->asPosition()->add(0, $y, 0), $this->asPosition()->getLevel())))) {
                 RedstoneX::setActive($block, 15);
+                RedstoneX::getInstance()->getLogger()->info("§aACTIVATING found");
             }
         }
         for($z = $this->getZ()-1; $z <= $this->getZ()+1; $z++) {
             if(RedstoneX::isRedstone($block = $this->asPosition()->getLevel()->getBlock(Position::fromObject($this->asPosition()->add(0, 0, $z), $this->asPosition()->getLevel())))) {
                 RedstoneX::setActive($block, 15);
+                RedstoneX::getInstance()->getLogger()->info("§aACTIVATING found");
             }
         }
     }

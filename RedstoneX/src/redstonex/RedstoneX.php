@@ -57,10 +57,11 @@ class RedstoneX extends PluginBase implements RedstoneData {
     public static function setActive(Block $block, int $active = 15) {
         switch ($block->getId()) {
             case self::REDSTONE_WIRE:
-                $block->setDamage($active);
+                $block->getLevel()->setBlock($block->asVector3(), new Redstone(RedstoneX::REDSTONE_WIRE, $active, "Redstone Wire", RedstoneX::REDSTONE_ITEM));
                 return;
             default:
                 $block->setDamage(intval($block->getDamage()+$active));
+                $block->getLevel()->setBlock($block->asVector3(), $block, true, true);
                 return;
         }
     }
