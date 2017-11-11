@@ -20,11 +20,11 @@ class Redstone extends Solid {
     /**
      * @return string
      */
-    public function getName() {
+    public function getName():string {
         return "Redstone";
     }
 
-    public function onUpdate($type) {
+    public function onUpdate(int $type) {
         $this->activateRedstone();
         return 1;
     }

@@ -22,7 +22,7 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
     /**
      * @return string
      */
-    public function getName() {
+    public function getName():string {
         return "Redstone Torch";
     }
 
@@ -30,7 +30,7 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
      * @param int $type
      * @return int
      */
-    public function onUpdate($type) {
+    public function onUpdate(int $type) {
         $this->activateRedstone();
         return 1;
     }
