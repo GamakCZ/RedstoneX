@@ -25,7 +25,7 @@ class EventListener implements Listener {
         switch ($event->getBlock()->getId()) {
             case Block::REDSTONE_TORCH:
                 $event->setCancelled(true);
-                $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new RedstoneTorch(0), false, false);
+                $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new RedstoneTorch(0), false, true);
                 if($block instanceof RedstoneTorch) {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Torch) (redstonex block)");
                     $block->activateRedstone();
@@ -37,8 +37,9 @@ class EventListener implements Listener {
                     }
                 }
                 return;
+            case RedstoneX::REDSTONE_ITEM:
             case Block::REDSTONE_WIRE:
-                $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new Redstone(RedstoneX::REDSTONE_WIRE, $event->getItem()->getDamage()));
+                $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new Redstone(RedstoneX::REDSTONE_WIRE, $event->getItem()->getDamage()), false, true);
                 $event->setCancelled(true);
                 if($block instanceof Redstone) {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Wire) (redstonex block)");
@@ -47,10 +48,10 @@ class EventListener implements Listener {
                 else {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Wire) (pmmp block)");
                 }
-                ob_start();
+                /*ob_start();
                 var_dump($event->getBlock());
                 $dump = ob_get_clean();
-                RedstoneX::getInstance()->getLogger()->info($dump);
+                RedstoneX::getInstance()->getLogger()->info($dump);*/
                 return;
         }
     }
