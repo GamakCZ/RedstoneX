@@ -14,6 +14,7 @@ use redstonex\event\EventListener;
 /**
  * Class RedstoneX
  * @package redstonex
+ * @author VixikCZ
  */
 class RedstoneX extends PluginBase implements RedstoneData {
 
