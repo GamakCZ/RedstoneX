@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace redstonex;
 
 use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
 use pocketmine\plugin\PluginBase;
 use redstonex\block\Redstone;
 use redstonex\block\RedstoneTorch;
@@ -29,8 +30,8 @@ class RedstoneX extends PluginBase implements RedstoneData {
     }
 
     public function registerBlocks() {
-        Block::registerBlock(new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM), true);
-        Block::registerBlock(new RedstoneTorch(0), true);
+        BlockFactory::registerBlock(new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM), true);
+        BlockFactory::registerBlock(new RedstoneTorch(0), true);
     }
 
     /**
