@@ -11,7 +11,7 @@ namespace redstonex;
 interface RedstoneData {
 
     // ALL
-    const ALL_IDS = [124, 123, 94, 93, 76, 75];
+    const ALL_IDS = [124, 123, 94, 93, 76, 75, 55];
 
     // BLOCKS
     const REDSTONE_LAMP_ACTIVE = 124;

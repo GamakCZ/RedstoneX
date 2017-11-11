@@ -58,6 +58,6 @@ class Redstone extends Transparent {
     }
 
     public function getHardness() : float {
-        return 1;
+        return 0.2;
     }
 }
