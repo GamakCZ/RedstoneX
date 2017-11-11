@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace redstonex\block;
 
+use pocketmine\block\Block;
 use pocketmine\block\Solid;
+use pocketmine\block\Transparent;
+use pocketmine\item\Item;
 use pocketmine\level\Position;
+use pocketmine\math\Vector3;
+use pocketmine\Player;
 use redstonex\RedstoneData;
 use redstonex\RedstoneX;
 
-class Redstone extends Solid {
+class Redstone extends Transparent {
 
     /** @var int $id */
     protected $id = RedstoneData::REDSTONE_WIRE;
@@ -23,6 +28,11 @@ class Redstone extends Solid {
     public function getName():string {
         return "Redstone";
     }
+
+    /*public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos, Player $player = \null): bool {
+        $this->activateRedstone();
+        return true;
+    }*/
 
     public function onUpdate(int $type) {
         $this->activateRedstone();

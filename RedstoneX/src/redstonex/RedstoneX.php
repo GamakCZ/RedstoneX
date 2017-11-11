@@ -18,10 +18,14 @@ use redstonex\event\EventListener;
  */
 class RedstoneX extends PluginBase implements RedstoneData {
 
+    /** @var  RedstoneX $instance */
+    private static $instance;
+
     /** @var  EventListener $listener */
     private $listener;
 
     public function onEnable() {
+        self::$instance = $this;
         $this->registerBlocks();
         $this->registerEvents();
     }
@@ -41,6 +45,13 @@ class RedstoneX extends PluginBase implements RedstoneData {
      */
     public static function isRedstone(Block $block) {
         return in_array(intval($block->getId()), self::ALL_IDS);
+    }
+
+    /**
+     * @return RedstoneX $instance
+     */
+    public static function getInstance():RedstoneX {
+        return self::$instance;
     }
 
     public static function setActive(Block $block, int $active = 15) {
