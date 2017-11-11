@@ -48,7 +48,7 @@ class Redstone extends Solid {
         }
     }
 
-    public function getHardness() {
+    public function getHardness() : float {
         return 1;
     }
 }
