@@ -21,12 +21,14 @@ class EventListener implements Listener {
      * @param BlockPlaceEvent $event
      */
     public function onPlace(BlockPlaceEvent $event) {
+        $block = $event->getBlock();
         switch ($event->getBlock()->getId()) {
             case Block::REDSTONE_TORCH:
                 $event->setCancelled(true);
                 $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new RedstoneTorch(0), false, false);
-                if($event->getBlock() instanceof RedstoneTorch) {
+                if($block instanceof RedstoneTorch) {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Torch) (redstonex block)");
+                    $block->activateRedstone();
                 }
                 else {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Torch) (pmmp block)");
@@ -36,14 +38,19 @@ class EventListener implements Listener {
                 }
                 return;
             case Block::REDSTONE_WIRE:
-                $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new Redstone(RedstoneX::REDSTONE_WIRE, 0, "Redstone Wire", RedstoneX::REDSTONE_ITEM));
+                $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new Redstone(RedstoneX::REDSTONE_WIRE, $event->getItem()->getDamage()));
                 $event->setCancelled(true);
-                if($event->getBlock() instanceof Redstone) {
+                if($block instanceof Redstone) {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Wire) (redstonex block)");
+                    $block->activateRedstone();
                 }
                 else {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Wire) (pmmp block)");
                 }
+                ob_start();
+                var_dump($event->getBlock());
+                $dump = ob_get_clean();
+                RedstoneX::getInstance()->getLogger()->info($dump);
                 return;
         }
     }
