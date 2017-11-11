@@ -29,6 +29,9 @@ class EventListener implements Listener {
                 }
                 else {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Torch) (pmmp block)");
+                    if($event->getBlock()->getLevel()->getBlock($event->getBlock()->asVector3()) instanceof RedstoneTorch) {
+                        RedstoneX::getInstance()->getLogger()->info("Placed block (Redstone Torch) (pmmp block)");
+                    }
                 }
                 $event->setCancelled(true);
                 return;
