@@ -3,5 +3,5 @@ branches:
 - master
 projects:
   RedstoneX:
-    path: "Redston"
+    path: "RedstoneX"
 ...
