@@ -39,6 +39,9 @@ class EventListener implements Listener {
                 return;
             case RedstoneX::REDSTONE_ITEM:
             case Block::REDSTONE_WIRE:
+            if($event->isCancelled()) {
+                $event->setCancelled(false);
+            }
                 $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new Redstone(RedstoneX::REDSTONE_WIRE, $event->getItem()->getDamage()), false, true);
                 $event->setCancelled(true);
                 if($block instanceof Redstone) {
@@ -48,10 +51,6 @@ class EventListener implements Listener {
                 else {
                     RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Wire) (pmmp block)");
                 }
-                /*ob_start();
-                var_dump($event->getBlock());
-                $dump = ob_get_clean();
-                RedstoneX::getInstance()->getLogger()->info($dump);*/
                 return;
         }
     }

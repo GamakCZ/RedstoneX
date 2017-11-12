@@ -36,11 +36,13 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
     }
 
     public function activateRedstone() {
+
+
         RedstoneX::consoleDebug("§aACTIVATING (redstone wire by torch)");
-        // dump debug
-        #ob_start(); var_dump($this->asPosition()); RedstoneX::consoleDebug(ob_get_clean());
+
+
         for($x = $this->getX()-1; $x <= $this->getX()+1; $x++) {
-            if($x = $this->getX()) return;
+            if($x == $this->getX()) return;
             $block = $this->getLevel()->getBlock(new Vector3($x, $this->getY(), $this->getZ()));
             if(RedstoneX::isRedstone($block) || $block instanceof Redstone || $block->getId() == RedstoneX::REDSTONE_WIRE) {
                 RedstoneX::setActive($block, 15);
@@ -50,8 +52,9 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
                 RedstoneX::consoleDebug("nothing found.");
             }
         }
+
         for($y = $this->getY(); $y <= $this->getY()+1; $y++) {
-            if($y = $this->getY()) return;
+            if($y == $this->getY()) return;
             $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $y, $this->getZ()));
             if(RedstoneX::isRedstone($block) || $block instanceof Redstone || $block->getId() == RedstoneX::REDSTONE_WIRE) {
                 RedstoneX::setActive($block, 15);
@@ -62,7 +65,7 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
             }
         }
         for($z = $this->getZ()-1; $z <= $this->getZ()+1; $z++) {
-            if($z = $this->getZ()) return;
+            if($z == $this->getZ()) return;
             $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $this->getY(), $z));
             if(RedstoneX::isRedstone($block) || $block instanceof Redstone || $block->getId() == RedstoneX::REDSTONE_WIRE) {
                 RedstoneX::setActive($block, 15);
