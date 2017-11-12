@@ -1,0 +1,27 @@
+A = active block id
+I = inactive block id
+
+
+BLOCKS:
+---
+redstone lamp:
+    A: 124
+    I: 123
+
+redstone repeater:
+    A: 94
+    I: 93
+
+redstone torch:
+    A: 76
+    I: 75
+
+redstone wire:
+    ID WIRE: 55
+    ID ITEM: 331
+---
+
+DATA:
+---
+https://minecraft.gamepedia.com/Redstone#Data_values
+---

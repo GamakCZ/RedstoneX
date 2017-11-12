@@ -1,8 +1,12 @@
 # RedstoneX
 
-Experimental Redstone plugin for PocketMine
+**Experimental Redstone plugin for PocketMine**
 
-Implemented Blocks:
+![PoggitStatus](https://poggit.pmmp.io/ci.shield/GamakCZ/RedstoneX)
+
+![0.1-PreReleased](https://raw.githubusercontent.com/GamakCZ/RedstoneX/master/Minecraft%2012.11.2017%2012_59_40.png)
+
+**Implemented Blocks:**
 
 - [x] Redstone - Fixing bugs...
 - [x] Redstone Torch - Fixing bugs...
