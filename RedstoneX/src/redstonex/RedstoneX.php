@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace redstonex;
 
+use Couchbase\Exception;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\plugin\PluginBase;
@@ -24,6 +25,9 @@ class RedstoneX extends PluginBase implements RedstoneData {
     /** @var  EventListener $listener */
     private $listener;
 
+    /** @var bool $debug */
+    private static $debug = true;
+
     public function onEnable() {
         self::$instance = $this;
         $this->registerBlocks();
@@ -35,8 +39,28 @@ class RedstoneX extends PluginBase implements RedstoneData {
     }
 
     public function registerBlocks() {
-        BlockFactory::registerBlock(new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM), true);
-        BlockFactory::registerBlock(new RedstoneTorch(0), true);
+        // OLD API
+        try {
+            if(class_exists(BlockFactory::class)) {
+                BlockFactory::registerBlock(new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM), true);
+                BlockFactory::registerBlock(new RedstoneTorch(0), true);
+            }
+            else {
+                goto e;
+            }
+        }
+        catch (\Exception $exception) {
+            e:
+            Block::registerBlock(new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM), true);
+            Block::registerBlock(new RedstoneTorch(0), true);
+        }
+    }
+
+    /**
+     * @param string $debug
+     */
+    public static function consoleDebug(string $debug) {
+        if(self::$debug) self::getInstance()->getLogger()->info($debug);
     }
 
     /**
