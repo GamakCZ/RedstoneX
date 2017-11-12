@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace redstonex\block;
 
 use pocketmine\level\Position;
+use pocketmine\math\Vector3;
 use redstonex\RedstoneX;
 
 /**
@@ -37,9 +38,11 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
     public function activateRedstone() {
         RedstoneX::consoleDebug("§aACTIVATING (redstone wire by torch)");
         // dump debug
-        ob_start(); var_dump($this->asPosition()); RedstoneX::consoleDebug(ob_get_clean());
+        #ob_start(); var_dump($this->asPosition()); RedstoneX::consoleDebug(ob_get_clean());
         for($x = $this->getX()-1; $x <= $this->getX()+1; $x++) {
-            if(RedstoneX::isRedstone($block = $this->getLevel()->getBlock(Position::fromObject($this->add($x, 0, 0), $this->getLevel())))) {
+            if($x = $this->getX()) return;
+            $block = $this->getLevel()->getBlock(new Vector3($x, $this->getY(), $this->getZ()));
+            if(RedstoneX::isRedstone($block) || $block instanceof Redstone || $block->getId() == RedstoneX::REDSTONE_WIRE) {
                 RedstoneX::setActive($block, 15);
                 RedstoneX::consoleDebug("§aACTIVATING found");
             }
@@ -48,7 +51,9 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
             }
         }
         for($y = $this->getY(); $y <= $this->getY()+1; $y++) {
-            if(RedstoneX::isRedstone($block = $this->asPosition()->getLevel()->getBlock(Position::fromObject($this->asPosition()->add(0, $y, 0), $this->asPosition()->getLevel())))) {
+            if($y = $this->getY()) return;
+            $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $y, $this->getZ()));
+            if(RedstoneX::isRedstone($block) || $block instanceof Redstone || $block->getId() == RedstoneX::REDSTONE_WIRE) {
                 RedstoneX::setActive($block, 15);
                 RedstoneX::consoleDebug("§aACTIVATING found");
             }
@@ -57,7 +62,9 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
             }
         }
         for($z = $this->getZ()-1; $z <= $this->getZ()+1; $z++) {
-            if(RedstoneX::isRedstone($block = $this->asPosition()->getLevel()->getBlock(Position::fromObject($this->asPosition()->add(0, 0, $z), $this->asPosition()->getLevel())))) {
+            if($z = $this->getZ()) return;
+            $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $this->getY(), $z));
+            if(RedstoneX::isRedstone($block) || $block instanceof Redstone || $block->getId() == RedstoneX::REDSTONE_WIRE) {
                 RedstoneX::setActive($block, 15);
                 RedstoneX::consoleDebug("§aACTIVATING found");
             }
