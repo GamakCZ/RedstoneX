@@ -8,6 +8,7 @@ use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\plugin\PluginBase;
 use redstonex\block\Redstone;
+use redstonex\block\RedstoneLamp;
 use redstonex\block\RedstoneTorch;
 use redstonex\event\EventListener;
 
@@ -38,11 +39,21 @@ class RedstoneX extends PluginBase implements RedstoneData {
     }
 
     public function registerBlocks() {
-        // OLD API
+
+        /** @var Block[] $blocks */
+        $blocks = [
+            new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM),
+            new RedstoneTorch(0),
+            new RedstoneLamp(0)
+
+        ];
+
+        // OLD API SUPPORT
         try {
             if(class_exists(BlockFactory::class)) {
-                BlockFactory::registerBlock(new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM), true);
-                BlockFactory::registerBlock(new RedstoneTorch(0), true);
+                foreach ($blocks as $block) {
+                    BlockFactory::registerBlock($block);
+                }
             }
             else {
                 goto e;
@@ -50,8 +61,9 @@ class RedstoneX extends PluginBase implements RedstoneData {
         }
         catch (\Exception $exception) {
             e:
-            Block::registerBlock(new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM), true);
-            Block::registerBlock(new RedstoneTorch(0), true);
+            foreach ($blocks as $block) {
+                Block::registerBlock($block);
+            }
         }
     }
 

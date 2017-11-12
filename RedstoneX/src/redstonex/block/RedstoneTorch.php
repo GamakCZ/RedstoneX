@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace redstonex\block;
 
-use pocketmine\level\Position;
+use pocketmine\item\Tool;
 use pocketmine\math\Vector3;
 use redstonex\RedstoneX;
 
@@ -24,6 +24,34 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
      */
     public function getName():string {
         return "Redstone Torch";
+    }
+
+    /**
+     * @param bool $activated
+     */
+    public function setActivated(bool $activated = true) {
+        $activated ? $this->id = RedstoneX::REDSTONE_TORCH_ACTIVE : $this->id = RedstoneX::REDSTONE_LAMP_INACTIVE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActivated(): bool {
+        return $this->id === RedstoneX::REDSTONE_TORCH_ACTIVE;
+    }
+
+    /**
+     * @return int
+     */
+    public function getToolType(): int {
+        return Tool::TYPE_NONE;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHardness(): float {
+        return 0.1;
     }
 
     /**
