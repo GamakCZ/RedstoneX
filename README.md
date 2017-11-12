@@ -2,9 +2,9 @@
 
 **Experimental Redstone plugin for PocketMine**
 
-![PoggitStatus](https://poggit.pmmp.io/ci.shield/GamakCZ/RedstoneX/RedstoneX)
+[![Poggit](https://poggit.pmmp.io/ci.shield/GamakCZ/RedstoneX/RedstoneX)](https://poggit.pmmp.io/ci/GamakCZ/RedstoneX/RedstoneX)
 
-![0.1-PreReleased](https://github.com/GamakCZ/RedstoneX/blob/master/data/0.1-PreReleased.png?raw=true)
+[![0.1-PreReleased](https://github.com/GamakCZ/RedstoneX/blob/master/data/0.1-PreReleased.png?raw=true)](https://github.com/GamakCZ/RedstoneX/releases/tag/0.1)
 
 **Implemented Blocks:**
 
