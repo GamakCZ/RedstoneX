@@ -114,13 +114,11 @@ class RedstoneX extends PluginBase implements RedstoneData {
      * @param Block $block
      * @return bool
      */
-    public static function isActive(Block $block): bool {
+    public static function isActive(Block $block, $num = 0): bool {
         $return = false;
         switch ($block->getId()) {
             case self::REDSTONE_WIRE:
-                if($block->getDamage() > 1) {
-                    $return = true;
-                }
+                if($block->getDamage() > 1) $return = true;
                 break;
             case self::REDSTONE_TORCH_ACTIVE:
                 $return = true;

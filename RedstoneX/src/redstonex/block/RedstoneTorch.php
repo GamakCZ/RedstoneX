@@ -36,9 +36,7 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
     }
 
     public function activateRedstone() {
-
         RedstoneX::consoleDebug("§aACTIVATING (redstone wire by torch)");
-
         for($x = $this->getX()-1; $x <= $this->getX()+1; $x++) {
             if($x != $this->getX()) {
                 $block = $this->getLevel()->getBlock(new Vector3($x, $this->getY(), $this->getZ()));
