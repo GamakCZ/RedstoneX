@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace redstonex;
 
-use Couchbase\Exception;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\plugin\PluginBase;
@@ -78,6 +77,23 @@ class RedstoneX extends PluginBase implements RedstoneData {
         return self::$instance;
     }
 
+    /**
+     * @param Block $block
+     */
+    public static function setInactive(Block $block) {
+        if($block->getId() == self::REDSTONE_WIRE || $block instanceof Redstone) {
+            $block->getLevel()->setBlock($block->asVector3(), new Redstone);
+        }
+        else {
+            $block->getLevel()->setBlockIdAt($block->getY(), $block->getY(), $block->getZ(), $block->getId());
+            $block->getLevel()->setBlockDataAt($block->getY(), $block->getY(), $block->getZ(), 0);
+        }
+    }
+
+    /**
+     * @param Block $block
+     * @param int $active
+     */
     public static function setActive(Block $block, int $active = 15) {
         switch ($block->getId()) {
             case self::REDSTONE_WIRE:
@@ -90,8 +106,26 @@ class RedstoneX extends PluginBase implements RedstoneData {
                     #$block->setDamage(intval($block->getDamage()+$active));
                     $block->getLevel()->setBlock($block->asVector3(), $block, true, true);
                 }
-
                 return;
         }
+    }
+
+    /**
+     * @param Block $block
+     * @return bool
+     */
+    public static function isActive(Block $block): bool {
+        $return = false;
+        switch ($block->getId()) {
+            case self::REDSTONE_WIRE:
+                if($block->getDamage() > 1) {
+                    $return = true;
+                }
+                break;
+            case self::REDSTONE_TORCH_ACTIVE:
+                $return = true;
+                break;
+        }
+        return $return;
     }
 }

@@ -4,9 +4,9 @@ Experimental Redstone plugin for PocketMine
 
 Implemented Blocks:
 
-- [ ] Redstone - TODO
-- [ ] Redstone Torch - TODO
-- [ ] Redstone Lamp
+- [x] Redstone - Fixing bugs...
+- [x] Redstone Torch - Fixing bugs...
+- [ ] Redstone Lamp - TODO
 - [ ] Lever
 - [ ] Buttons
 - [ ] Trap Door

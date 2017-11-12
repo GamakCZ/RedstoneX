@@ -26,30 +26,28 @@ class EventListener implements Listener {
             case Block::REDSTONE_TORCH:
                 $event->setCancelled(true);
                 $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new RedstoneTorch(0), false, true);
-                if($block instanceof RedstoneTorch) {
-                    RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Torch) (redstonex block)");
+                if ($block instanceof RedstoneTorch) {
+                    RedstoneX::consoleDebug("Placing block (Redstone Torch) (redstonex block)");
                     $block->activateRedstone();
-                }
-                else {
-                    RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Torch) (pmmp block)");
-                    if($event->getBlock()->getLevel()->getBlock($event->getBlock()->asVector3()) instanceof RedstoneTorch) {
+                } else {
+                    RedstoneX::consoleDebug("Placing block (Redstone Torch) (pmmp block)");
+                    if ($event->getBlock()->getLevel()->getBlock($event->getBlock()->asVector3()) instanceof RedstoneTorch) {
                         RedstoneX::getInstance()->getLogger()->info("Placed block (Redstone Torch) (pmmp block)");
                     }
                 }
                 return;
             case RedstoneX::REDSTONE_ITEM:
             case Block::REDSTONE_WIRE:
-            if($event->isCancelled()) {
-                $event->setCancelled(false);
-            }
+                if ($event->isCancelled()) {
+                    $event->setCancelled(false);
+                }
                 $event->getBlock()->getLevel()->setBlock($event->getBlock()->asVector3(), new Redstone(RedstoneX::REDSTONE_WIRE, $event->getItem()->getDamage()), false, true);
                 $event->setCancelled(true);
-                if($block instanceof Redstone) {
-                    RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Wire) (redstonex block)");
+                if ($block instanceof Redstone) {
+                    RedstoneX::consoleDebug("Placing block (Redstone Wire) (redstonex block)");
                     $block->activateRedstone();
-                }
-                else {
-                    RedstoneX::getInstance()->getLogger()->info("Placing block (Redstone Wire) (pmmp block)");
+                } else {
+                    RedstoneX::consoleDebug("Placing block (Redstone Wire) (pmmp block)");
                 }
                 return;
         }

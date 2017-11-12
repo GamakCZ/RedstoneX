@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace redstonex\block;
 
 use pocketmine\block\Block;
+use pocketmine\block\Solid;
 use pocketmine\block\Transparent;
+use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use redstonex\RedstoneX;
 
@@ -25,59 +27,104 @@ class Redstone extends Transparent {
      * @return string
      */
     public function getName(): string {
-        return "Redstone";
+        return "Redstone Wire";
     }
 
     public function onUpdate(int $type) {
         $this->activateRedstone();
+        $this->deactivateRedstone();
         return $type;
+    }
+
+    public function deactivateRedstone() {
+        RedstoneX::consoleDebug("§aDEACTIVING (???)");
+
+        $signal = false;
+        for($x = $this->getX()-1; $x <= $this->getX()+1; $x++) {
+            for($y = $this->getY() - 1; $y <= $this->getY() + 1; $y++) {
+                if($x != $this->getX()) {
+                    $block = $this->getLevel()->getBlock(new Vector3($x, $this->getY(), $this->getZ()));
+                    if(RedstoneX::isActive($block)) {
+                        $signal = true;
+                    }
+                }
+            }
+        }
+
+        if(RedstoneX::isActive($this->getLevel()->getBlock(new Vector3($this->getX(), $this->getY()+1, $this->getZ())))) {
+            $signal = true;
+        }
+
+        for($z = $this->getZ()-1; $z <= $this->getZ()+1; $z++) {
+            for($y = $this->getY() - 1; $y <= $this->getY() + 1; $y++) {
+                if($z != $this->getZ()) {
+                    $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $this->getY(), $z));
+                    if(RedstoneX::isActive($block)) {
+                        $signal = true;
+                    }
+                }
+            }
+        }
+
+        if($signal === false) {
+            if(RedstoneX::isActive($this)) {
+                RedstoneX::setInactive($this);
+            }
+            RedstoneX::consoleDebug("§aDEACTIVED BLOCK!");
+        }
     }
 
     public function activateRedstone() {
 
         if ($this->meta < 1) return;
 
+        if(!($this->getLevel()->getBlock($this->add(0, -1, 0)) instanceof Solid)) {
+            $this->getLevel()->setBlock($this->asVector3(), Block::get(Block::AIR));
+            $this->getLevel()->dropItem($this->asVector3(), Item::get(Item::REDSTONE));
+        }
+
         RedstoneX::consoleDebug("ACTIVATING (redstone wire by redstone wire)");
 
         for ($x = $this->getX() - 1; $x <= $this->getX() + 1; $x++) {
-
-            if($x == $this->getX()) return;
-
-            $block = $this->getLevel()->getBlock(new Vector3($x, $this->getY(), $this->getZ()));
-
-            if ($block->getId() == RedstoneX::REDSTONE_WIRE || $block instanceof Redstone) {
-
-                RedstoneX::setActive($block, intval($this->getDamage() - 1));
-                RedstoneX::consoleDebug("ACTIVATING found");
-
-            }
-            else {
-
-                RedstoneX::consoleDebug("nothing found.");
-
+            for($y = $this->getY() - 1; $y <= $this->getY() + 1; $y++) {
+                if($x != $this->getX()) {
+                    $block = $this->getLevel()->getBlock(new Vector3($x, $y, $this->getZ()));
+                    if ($block->getId() == RedstoneX::REDSTONE_WIRE || $block instanceof Redstone) {
+                        RedstoneX::setActive($block, intval($this->getDamage() - 1));
+                        RedstoneX::consoleDebug("ACTIVATING found");
+                    }
+                    else {
+                        RedstoneX::consoleDebug("nothing found.");
+                    }
+                }
             }
         }
+
         for ($y = $this->getY(); $y <= $this->getY() + 1; $y++) {
-            if($y == $this->getY()) return;
-            $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $y, $this->getZ()));
-            if ($block->getId() == RedstoneX::REDSTONE_WIRE || $block instanceof Redstone) {
-                RedstoneX::setActive($block, intval($this->getDamage() - 1));
-                RedstoneX::consoleDebug("ACTIVATING found");
+            if($y != $this->getY()) {
+                $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $y, $this->getZ()));
+                if ($block->getId() == RedstoneX::REDSTONE_WIRE || $block instanceof Redstone) {
+                    RedstoneX::setActive($block, intval($this->getDamage() - 1));
+                    RedstoneX::consoleDebug("ACTIVATING found");
+                }
+                else {
+                    RedstoneX::consoleDebug("nothing found.");
+                }
             }
-            else {
-                RedstoneX::consoleDebug("nothing found.");
-            }
-            #ob_start(); var_dump(new Vector3($this->getX(), $y, $this->getZ())); RedstoneX::consoleDebug(ob_get_clean());
         }
+
         for ($z = $this->getZ() - 1; $z <= $this->getZ() + 1; $z++) {
-            if($z == $this->getZ()) return;
-            $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $this->getY(), $z));
-            if ($block->getId() == RedstoneX::REDSTONE_WIRE || $block instanceof Redstone) {
-                RedstoneX::setActive($block, intval($this->getDamage() - 1));
-                RedstoneX::consoleDebug("ACTIVATING found");
-            }
-            else {
-                RedstoneX::consoleDebug("nothing found.");
+            for($y = $this->getY() - 1; $y <= $this->getY() + 1; $y++) {
+                if($z != $this->getZ()) {
+                    $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $y, $z));
+                    if ($block->getId() == RedstoneX::REDSTONE_WIRE || $block instanceof Redstone) {
+                        RedstoneX::setActive($block, intval($this->getDamage() - 1));
+                        RedstoneX::consoleDebug("ACTIVATING found");
+                    }
+                    else {
+                        RedstoneX::consoleDebug("nothing found.");
+                    }
+                }
             }
         }
     }
