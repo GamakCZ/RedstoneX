@@ -7,6 +7,7 @@ namespace redstonex\block;
 use pocketmine\block\Block;
 use pocketmine\block\Solid;
 use pocketmine\block\Transparent;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use redstonex\RedstoneX;
@@ -77,11 +78,6 @@ class Redstone extends Transparent {
     public function activateRedstone() {
 
         if ($this->meta < 1) return;
-
-        if(!($this->getLevel()->getBlock($this->add(0, -1, 0)) instanceof Solid)) {
-            $this->getLevel()->setBlock($this->asVector3(), Block::get(Block::AIR));
-            $this->getLevel()->dropItem($this->asVector3(), Item::get(Item::REDSTONE));
-        }
 
         RedstoneX::consoleDebug("ACTIVATING (redstone wire by redstone wire)");
 

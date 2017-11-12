@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace redstonex\event;
 
 use pocketmine\block\Block;
+use pocketmine\block\Solid;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Listener;
 use redstonex\block\Redstone;
@@ -22,6 +23,11 @@ class EventListener implements Listener {
      */
     public function onPlace(BlockPlaceEvent $event) {
         $block = $event->getBlock();
+
+        if(!($block->getLevel()->getBlock($block->add(0, -1, 0)) instanceof Solid)) {
+            $event->setCancelled();
+        }
+
         switch ($event->getBlock()->getId()) {
             case Block::REDSTONE_TORCH:
                 $event->setCancelled(true);
@@ -32,7 +38,7 @@ class EventListener implements Listener {
                 } else {
                     RedstoneX::consoleDebug("Placing block (Redstone Torch) (pmmp block)");
                     if ($event->getBlock()->getLevel()->getBlock($event->getBlock()->asVector3()) instanceof RedstoneTorch) {
-                        RedstoneX::getInstance()->getLogger()->info("Placed block (Redstone Torch) (pmmp block)");
+                        RedstoneX::consoleDebug("Placed block (Redstone Torch) (pmmp block)");
                     }
                 }
                 return;
