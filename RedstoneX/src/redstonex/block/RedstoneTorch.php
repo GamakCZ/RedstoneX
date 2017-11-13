@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace redstonex\block;
 
 use pocketmine\item\Tool;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use redstonex\RedstoneX;
 
@@ -59,6 +60,24 @@ class RedstoneTorch extends \pocketmine\block\RedstoneTorch {
      * @return int
      */
     public function onUpdate(int $type) {
+        if($type === Level::BLOCK_UPDATE_NORMAL){
+        $below = $this->getSide(Vector3::SIDE_DOWN);
+        $side = $this->getDamage();
+        $faces = [
+            0 => Vector3::SIDE_DOWN,
+            1 => Vector3::SIDE_WEST,
+            2 => Vector3::SIDE_EAST,
+            3 => Vector3::SIDE_NORTH,
+            4 => Vector3::SIDE_SOUTH,
+            5 => Vector3::SIDE_DOWN
+        ];
+
+        if($this->getSide($faces[$side])->isTransparent() === \true and !($side === Vector3::SIDE_DOWN and ($below->getId() === self::FENCE or $below->getId() === self::COBBLESTONE_WALL))){
+            $this->getLevel()->useBreakOn($this);
+
+            return Level::BLOCK_UPDATE_NORMAL;
+        }
+    }
         $this->activateRedstone();
         return $type;
     }

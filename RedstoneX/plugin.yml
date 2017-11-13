@@ -4,4 +4,4 @@ description: Experimental redstone plugin
 author: VixikCZ
 main: redstonex\RedstoneX
 load: STARTUP
-version: 0.1
+version: 0.1.1

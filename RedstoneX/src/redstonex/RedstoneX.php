@@ -7,8 +7,10 @@ namespace redstonex;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\plugin\PluginBase;
+use redstonex\block\Lever;
 use redstonex\block\Redstone;
 use redstonex\block\RedstoneLamp;
+use redstonex\block\RedstoneLampUnlit;
 use redstonex\block\RedstoneTorch;
 use redstonex\event\EventListener;
 
@@ -42,17 +44,18 @@ class RedstoneX extends PluginBase implements RedstoneData {
 
         /** @var Block[] $blocks */
         $blocks = [
-            new Redstone(self::REDSTONE_WIRE, 0, "Redstone Wire", self::REDSTONE_ITEM),
+            new Redstone(0),
             new RedstoneTorch(0),
-            new RedstoneLamp(0)
-
+            new RedstoneLamp(0),
+            new RedstoneLampUnlit(0),
+            new Lever(0)
         ];
 
         // OLD API SUPPORT
         try {
             if(class_exists(BlockFactory::class)) {
                 foreach ($blocks as $block) {
-                    BlockFactory::registerBlock($block);
+                    BlockFactory::registerBlock($block, true);
                 }
             }
             else {
@@ -60,10 +63,13 @@ class RedstoneX extends PluginBase implements RedstoneData {
             }
         }
         catch (\Exception $exception) {
-            e:
-            foreach ($blocks as $block) {
-                Block::registerBlock($block);
-            }
+            $this->getLogger()->critical("§cCloud not register blocks!");
+        }
+
+        return;
+        e:
+        foreach ($blocks as $block) {
+            Block::registerBlock($block, true);
         }
     }
 
@@ -115,7 +121,6 @@ class RedstoneX extends PluginBase implements RedstoneData {
                 return;
             default:
                 if($block->getDamage() < $active) {
-                    #$block->setDamage(intval($block->getDamage()+$active));
                     $block->getLevel()->setBlock($block->asVector3(), $block, true, true);
                 }
                 return;
@@ -127,15 +132,13 @@ class RedstoneX extends PluginBase implements RedstoneData {
      * @return bool
      */
     public static function isActive(Block $block, $num = 0): bool {
-        $return = false;
         switch ($block->getId()) {
             case self::REDSTONE_WIRE:
-                if($block->getDamage() > 1) $return = true;
-                break;
+                return $block->getDamage() > 1 ? true : false;
             case self::REDSTONE_TORCH_ACTIVE:
-                $return = true;
-                break;
+                return true;
+            default:
+                return false;
         }
-        return $return;
     }
 }

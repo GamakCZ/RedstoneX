@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace redstonex\block;
 
+use pocketmine\block\Block;
 use pocketmine\block\Transparent;
+use pocketmine\item\Item;
 use pocketmine\math\Vector3;
+use pocketmine\Player;
 use redstonex\RedstoneX;
 
 /**
@@ -22,13 +25,10 @@ class Redstone extends Transparent {
 
     /**
      * Redstone constructor.
-     * @param int $id
      * @param int $meta
-     * @param string $name
-     * @param int $itemId
      */
-    public function __construct($id = RedstoneX::REDSTONE_WIRE, $meta = 0, $name = "Redstone Wire", $itemId = RedstoneX::REDSTONE_ITEM) {
-        parent::__construct($id, $meta, $name, $itemId);
+    public function __construct($meta = 0) {
+        parent::__construct($this->id, $meta, $this->getName(), RedstoneX::REDSTONE_ITEM);
     }
 
     /**
@@ -46,6 +46,31 @@ class Redstone extends Transparent {
         $this->activateRedstone();
         $this->deactivateRedstone();
         return $type;
+    }
+
+    public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $facePos, Player $player = \null) : bool{
+        $below = $this->getSide(Vector3::SIDE_DOWN);
+
+        if($blockClicked->isTransparent() === \false and $face !== Vector3::SIDE_DOWN){
+            $faces = [
+                Vector3::SIDE_UP => 5,
+                Vector3::SIDE_NORTH => 4,
+                Vector3::SIDE_SOUTH => 3,
+                Vector3::SIDE_WEST => 2,
+                Vector3::SIDE_EAST => 1
+            ];
+            $this->meta = $faces[$face];
+            $this->getLevel()->setBlock($blockReplace, $this, \true, \true);
+
+            return \true;
+        }elseif($below->isTransparent() === \false or $below->getId() === self::FENCE or $below->getId() === self::COBBLESTONE_WALL){
+            $this->meta = 0;
+            $this->getLevel()->setBlock($blockReplace, $this, \true, \true);
+
+            return \true;
+        }
+
+        return \false;
     }
 
     public function deactivateRedstone() {
@@ -106,7 +131,9 @@ class Redstone extends Transparent {
             }
         }
 
-        for ($y = $this->getY(); $y <= $this->getY() + 1; $y++) {
+        /* WHY ?
+         *
+         * for ($y = $this->getY(); $y <= $this->getY() + 1; $y++) {
             if ($y != $this->getY()) {
                 $block = $this->getLevel()->getBlock(new Vector3($this->getX(), $y, $this->getZ()));
                 if ($block->getId() == RedstoneX::REDSTONE_WIRE || $block instanceof Redstone) {
@@ -116,7 +143,7 @@ class Redstone extends Transparent {
                     RedstoneX::consoleDebug("nothing found.");
                 }
             }
-        }
+        }*/
 
         for ($z = $this->getZ() - 1; $z <= $this->getZ() + 1; $z++) {
             for ($y = $this->getY() - 1; $y <= $this->getY() + 1; $y++) {

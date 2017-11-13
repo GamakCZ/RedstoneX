@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace redstonex\block;
 
+use pocketmine\item\Tool;
 use pocketmine\math\Vector3;
 use redstonex\RedstoneX;
 
@@ -11,15 +12,13 @@ use redstonex\RedstoneX;
  * Class RedstoneLamp
  * @package redstonex\block
  */
-class RedstoneLamp extends RedstoneLampUnlit {
+class RedstoneLampUnlit extends \pocketmine\block\RedstoneLamp {
+
+    /** @var int $id */
+    protected $id = RedstoneX::REDSTONE_TORCH_INACTIVE;
 
     /**
-     * @var int $id
-     */
-    protected $id = RedstoneX::REDSTONE_LAMP_ACTIVE;
-
-    /**
-     * RedstoneLamp constructor.
+     * RedstoneLampUnlit constructor.
      * @param int $meta
      */
     public function __construct($meta = 0) {
@@ -34,21 +33,31 @@ class RedstoneLamp extends RedstoneLampUnlit {
     }
 
     /**
-     * @param int $type
+     * @return float
+     */
+    final public function getHardness(): float {
+        return 0.3;
+    }
+
+    /**
      * @return int
      */
+    final public function getToolType(): int {
+        return Tool::TYPE_NONE;
+    }
+
     public function onUpdate(int $type) {
-        $this->checkDeactivate();
+        $this->checkActivate();
         return $type;
     }
 
-    public function checkDeactivate() {
+    public function checkActivate() {
         for($x = $this->getX() - 1; $x <= $this->getX() + 1; $x++) {
             for($y = $this->getY() - 1; $y <= $this->getY() + 1; $y++) {
                 if($x !== $this->getX()) {
                     $block = $this->getLevel()->getBlock(new Vector3($x, $y, $this->getZ()));
                     if(RedstoneX::isActive($block)) {
-                        $this->setActivated(false);
+                        $this->setActivated(true);
                     }
                 }
             }
@@ -58,7 +67,7 @@ class RedstoneLamp extends RedstoneLampUnlit {
                 if($x !== $this->getX()) {
                     $block = $this->getLevel()->getBlock(new Vector3($x, $y, $this->getZ()));
                     if(RedstoneX::isActive($block)) {
-                        $this->setActivated(false);
+                        $this->setActivated(true);
                     }
                 }
             }
